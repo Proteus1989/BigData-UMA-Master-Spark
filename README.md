@@ -17,4 +17,10 @@ Basic use examples of Spark en JAVA, corresponding Master Module 8.
  - Spark
  
  ##### IntelliJ
- Create a new project from existing sources.
+ - Create a new maven project (File / New / Project... / Maven)
+ - Set GroupId and ArtefactId as ``org.masterbigdata.spark``
+ - Set project name as ``Spark``
+ - Enable ``Enable auto-import``
+ - Replace ``pom.xml`` and ``src`` into new project folder
+ 
+ Done
