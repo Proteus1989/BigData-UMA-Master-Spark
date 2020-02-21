@@ -5,20 +5,21 @@ import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.util.LongAccumulator;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * Program that sums a list of numbers using Apache Spark
+ * Program that sums a list of numbers with accumulator using Apache Spark
  *
  * @author Antonio Suárez
  */
-public class AddNumbers {
+public class AddNumbersWithAccumulator {
     public static void main(String[] args) {
         Logger.getLogger("org").setLevel(Level.OFF);
 
-        SparkConf sparkConf = new SparkConf().setAppName("Add numbers").setMaster("local[4]");
+        SparkConf sparkConf = new SparkConf().setAppName("Add Numbers With Accumulator").setMaster("local[4]");
 
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
@@ -28,9 +29,15 @@ public class AddNumbers {
 
         JavaRDD<Integer> distributedList = sparkContext.parallelize(integerList);
 
-        int sum = distributedList.reduce(Integer::sum);
+        LongAccumulator accumulator = sparkContext.sc().longAccumulator();
+
+        int sum = distributedList.reduce((a,b) -> {
+            accumulator.add(1);
+            return a + b;
+        });
 
         System.out.println("The sum is: " + sum);
+        System.out.println("Number of reduces: " + accumulator.value());
 
         sparkContext.stop();
     }

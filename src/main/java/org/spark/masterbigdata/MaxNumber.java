@@ -7,18 +7,19 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
- * Program that sums a list of numbers using Apache Spark
+ * Program that gets the maximum number of a list using Apache Spark
  *
  * @author Antonio Suárez
  */
-public class AddNumbers {
+public class MaxNumber {
     public static void main(String[] args) {
         Logger.getLogger("org").setLevel(Level.OFF);
 
-        SparkConf sparkConf = new SparkConf().setAppName("Add numbers").setMaster("local[4]");
+        SparkConf sparkConf = new SparkConf().setAppName("Max Number").setMaster("local[4]");
 
         JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
@@ -28,9 +29,9 @@ public class AddNumbers {
 
         JavaRDD<Integer> distributedList = sparkContext.parallelize(integerList);
 
-        int sum = distributedList.reduce(Integer::sum);
+        int max = distributedList.max(Comparator.naturalOrder());
 
-        System.out.println("The sum is: " + sum);
+        System.out.println("The max is: " + max);
 
         sparkContext.stop();
     }
