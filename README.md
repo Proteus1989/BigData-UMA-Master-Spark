@@ -7,7 +7,6 @@ Basic use examples of Spark en JAVA, corresponding Master Module 8.
 #### Table of contents:
  - RDDs
  - DataFrames
- - Streams
  
  ### Installation
  Download zip or clone the repository in your machine.
